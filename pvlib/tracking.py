@@ -303,6 +303,8 @@ def calc_surface_orientation(tracker_theta, axis_tilt=0, axis_azimuth=0):
                                surface_azimuth)
     # constrain angles to [0, 360)
     surface_azimuth = np.mod(surface_azimuth, 360.0)
+    if np.ndim(tracker_theta) == 0:
+        surface_azimuth = surface_azimuth[0]
 
     out = {
         'surface_tilt': surface_tilt,

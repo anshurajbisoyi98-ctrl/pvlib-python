@@ -14,6 +14,9 @@ Deprecations
 
 Bug fixes
 ~~~~~~~~~
+* Restore scalar ``surface_azimuth`` output from
+  :py:func:`pvlib.tracking.calc_surface_orientation` for scalar tracker rotations.
+  (:issue:`2881`)
 
 
 Enhancements
@@ -42,4 +45,5 @@ Maintenance
 
 Contributors
 ~~~~~~~~~~~~
+* :ghuser:`anshurajbisoyi98-ctrl`
 

@@ -513,6 +513,28 @@ def test_calc_surface_orientation_types():
         assert out['surface_azimuth'] == pytest.approx(expected_azimuth)
 
 
+@pytest.mark.parametrize('scalar_type', [int, float, np.float64, np.asarray])
+@pytest.mark.parametrize('rotation, tilt, azimuth', [
+    (-30, 30, 90), (0, 0, 90), (30, 30, 270),
+])
+def test_calc_surface_orientation_scalar(scalar_type, rotation, tilt, azimuth):
+    # GH#2881: numerical comparisons alone also accept one-element arrays.
+    out = tracking.calc_surface_orientation(scalar_type(rotation), 0, 180)
+    assert np.isscalar(out['surface_tilt'])
+    assert np.isscalar(out['surface_azimuth'])
+    assert out['surface_tilt'] == pytest.approx(tilt)
+    assert out['surface_azimuth'] == pytest.approx(azimuth)
+
+
+@pytest.mark.parametrize('rotation', [[-30], np.array([-30])])
+def test_calc_surface_orientation_single_element_array(rotation):
+    out = tracking.calc_surface_orientation(rotation, 0, 180)
+    assert out['surface_tilt'].shape == (1,)
+    assert out['surface_azimuth'].shape == (1,)
+    np.testing.assert_allclose(out['surface_tilt'], [30])
+    np.testing.assert_allclose(out['surface_azimuth'], [90])
+
+
 def test_calc_surface_orientation_kwargs():
     # non-default axis tilt & azimuth
     rotations = np.array([-10, 0, 10])
